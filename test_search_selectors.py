@@ -1,22 +1,34 @@
-from selenium import webdriver
-from selenium.webdriver.common.by import By
+import unittest
 import time
+from selenium.webdriver.common.by import By
+from selenium import webdriver
 
-try: 
-    link = "http://suninjuly.github.io/registration2.html"
+
+
+
+class SearchSelectors(unittest.TestCase):
+    def test_registration1(self):
+        link = "http://suninjuly.github.io/registration1.html"
+        text = test_steps(link)
+        self.assertEqual("Congratulations! You have successfully registered!", text, "Text doesn't coincide" )
+
+    def test_registration2(self):
+        link = "http://suninjuly.github.io/registration2.html"
+        text = test_steps(link)
+        self.assertEqual("Congratulations! You have successfully registered!", text, "Text doesn't coincide" )
+
+def test_steps(link):
     browser = webdriver.Chrome()
     browser.get(link)
-
-    # Ваш код, который заполняет обязательные поля
     input1 = browser.find_element(By.CSS_SELECTOR, '.first_block>div.first_class>input')
     input1.send_keys('Name')
-    time.sleep(2)
+
     input2 = browser.find_element(By.CSS_SELECTOR, '.first_block>div.second_class>input')
     input2.send_keys('Surname')
-    time.sleep(2)
+            
     input3 = browser.find_element(By.CSS_SELECTOR, '.first_block>div.third_class>input')
     input3.send_keys('email')
-    time.sleep(2)
+
 
     # Отправляем заполненную форму
     button = browser.find_element(By.CSS_SELECTOR, "button.btn")
@@ -30,13 +42,6 @@ try:
     welcome_text_elt = browser.find_element(By.TAG_NAME, "h1")
     # записываем в переменную welcome_text текст из элемента welcome_text_elt
     welcome_text = welcome_text_elt.text
-
-    # с помощью assert проверяем, что ожидаемый текст совпадает с текстом на странице сайта
-    assert "Congratulations! You have successfully registered!" == welcome_text
-
-finally:
-    # ожидание чтобы визуально оценить результаты прохождения скрипта
-    time.sleep(10)
-    # закрываем браузер после всех манипуляций
-    browser.quit()
-
+    return welcome_text
+if __name__ == "__main__":
+    unittest.main()
